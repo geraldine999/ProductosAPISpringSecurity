@@ -1,6 +1,7 @@
 package com.example.productosapispringsecurity.producto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class ProductoController {
     }
 
     @GetMapping("nombre/{nombre}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<ProductoEntity> listarProductosQueContenganElNombre(@PathVariable String nombre){
         return productoService.findByNombreContaining(nombre);
     }
@@ -37,12 +39,14 @@ public class ProductoController {
         productoService.save(productoEntity);
     }
 
-    @PutMapping("guardar" )
+    @PutMapping(path = "guardar", consumes = "application/json")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void crearProducto(@RequestBody ProductoEntity productoEntity){
         productoService.save(productoEntity);
     }
 
     @DeleteMapping("eliminar/id/{id_producto}")
+    @PreAuthorize("hasAnyAuthority('producto:write')")
     public void eliminarProductoPorId(@PathVariable Integer id_producto){
         productoService.deleteById(id_producto);
     }

@@ -2,6 +2,7 @@ package com.example.productosapispringsecurity.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration //le dice a Spring que antes de correr la aplicación tiene que leer esto
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) //habilita el @PreAuthorize y el @PostAuthorize
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -27,11 +29,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/index.html").permitAll()
-                .antMatchers("/api/productos").hasRole("ADMIN")
+                //.antMatchers("/api/productos").hasRole(UserRole.ADMIN.getRole())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .httpBasic();
+        //o formLogin();
     }     // o httpBasic(); -> para hacer pruebas en Postman
           // O OAUTH2-> aplicacion de terceros
 
@@ -49,23 +52,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails usuario1 = User.builder()
                 .username("pablo")
                 .password(passwordEncoder().encode("unafacil"))
-                .roles(UserRole.ADMIN.name())
+                //.roles(UserRole.ADMIN.name())
+                .authorities(UserRole.ADMIN.getGrantedAuthorities()) /*quiero saber que es lo que puede hacer ese rol*/
                 .build();
 
         UserDetails usuario2= User.builder()
                 .username("geraldine")
                 .password(passwordEncoder().encode("unafacil"))
-                .roles(UserRole.ADMIN.name())
+                //.roles(UserRole.ADMIN.name())
+                .authorities(UserRole.ADMIN.getGrantedAuthorities())
                 .build();
         UserDetails usuario3= User.builder()
                 .username("jazmin")
                 .password(passwordEncoder().encode("unafacil"))
-                .roles(UserRole.CLIENTE.name())
+                //.roles(UserRole.CLIENTE.name())
+                .authorities(UserRole.CLIENTE.getGrantedAuthorities())
                 .build();
         UserDetails usuario4= User.builder()
                 .username("natalia")
                 .password(passwordEncoder().encode("unafacil"))
-                .roles(UserRole.CLIENTE.name())
+                //.roles(UserRole.CLIENTE.name())
+                .authorities(UserRole.CLIENTE.getGrantedAuthorities())
                 .build();
 
         return new InMemoryUserDetailsManager(usuario1, usuario2, usuario3, usuario4);

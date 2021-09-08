@@ -1,6 +1,6 @@
 Esta es una API CRUD (Create, read, update, delete) para la gestión de productos de una tienda. Implementa control de acceso basado en roles -(RBAC: Role-based Access Control)- mediante Spring Security. Es decir, le concede diferentes permisos a diferentes tipos de usuarios.
 
-Define 2 tipos de usuarios
+Define 2 tipos de usuarios/roles
 -
 - Admin: puede crear productos, ver sus nombres y el detalle de cada uno, eliminar y modificar productos.
 - Cliente: solo puede ver los nombres de los productos.
