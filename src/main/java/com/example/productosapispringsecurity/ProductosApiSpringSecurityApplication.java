@@ -10,4 +10,5 @@ public class ProductosApiSpringSecurityApplication {
         SpringApplication.run(ProductosApiSpringSecurityApplication.class, args);
     }
 
+    //TODO corregir put y post que no aceptan JSON.
 }

@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .httpBasic();
-        //o formLogin();
+        //o formLogin(); ->.failureForwardUrl(), successForwardUrl()
     }     // o httpBasic(); -> para hacer pruebas en Postman
           // O OAUTH2-> aplicacion de terceros
 
